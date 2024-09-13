@@ -1,5 +1,6 @@
 import socket
 import threading
+import getpass
 
 HOST = 'localhost'
 PORT = 5000
@@ -19,12 +20,27 @@ def receive_messages(client_socket):
 def get_alias():
     return input("Enter your alias: ")
 
+def get_password():
+    # Use getpass to securely input password
+    return getpass.getpass("Enter your password: ")
+
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
     client_socket.connect((HOST, PORT))
 
-    # Set alias
+    # Prompt for password and send it to the server
+    password = get_password()
+    client_socket.send(password.encode())
+
+    # Receive authentication response
+    auth_response = client_socket.recv(1024).decode()
+    if "Invalid password" in auth_response:
+        print(auth_response)
+        client_socket.close()
+        exit()
+
+    # Prompt for alias and send it to the server
     alias = get_alias()
     client_socket.send(f"/alias {alias}".encode())
 
