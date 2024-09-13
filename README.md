@@ -8,3 +8,10 @@
 
 # More things to add in the future
 * Learning for now 
+
+
+# UPDATE
+
+* I added UPDATED_CODE with client and server side updated code
+* also an example how to create and interact with simple sqlite3 database
+
